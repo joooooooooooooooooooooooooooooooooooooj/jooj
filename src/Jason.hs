@@ -1,4 +1,10 @@
-module Jason where
+module Jason
+  ( parseJson
+  , parseJson'
+  , value
+  , Object
+  , Value(..)
+  ) where
 
 import           Prelude hiding (null)
 import           Data.Void (Void)
@@ -11,6 +17,7 @@ import qualified Text.Megaparsec.Char as MP
 import qualified Text.Megaparsec.Char.Lexer as L
 
 type Parser = Parsec Void String
+type ParseError = MP.ParseErrorBundle String Void
 
 type Object = Map String Value
 
@@ -66,9 +73,6 @@ string = String <$> stringLiteral
 array :: Parser Value
 array = Array <$> brackets (value `MP.sepBy` comma)
 
-value :: Parser Value
-value = number <|> null <|> bool <|> string <|> array <|> object
-
 row :: Parser (String, Value)
 row = do
   k <- stringLiteral
@@ -79,3 +83,12 @@ row = do
 
 object :: Parser Value
 object = Obj <$> M.fromList <$> braces (row `MP.sepBy` comma)
+
+value :: Parser Value
+value = number <|> null <|> bool <|> string <|> array <|> object
+
+parseJson :: String -> Either ParseError Value
+parseJson = MP.parse value mempty
+
+parseJson' :: String -> IO ()
+parseJson' = MP.parseTest value
