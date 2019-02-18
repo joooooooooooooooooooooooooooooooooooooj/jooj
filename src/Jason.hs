@@ -1,5 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
-
 module Jason where
 
 import           Prelude hiding (null)
@@ -7,7 +5,6 @@ import           Data.Void (Void)
 import           Data.Map (Map)
 import qualified Data.Map as M
 
-import           Text.RawString.QQ
 import           Text.Megaparsec (Parsec, (<|>))
 import qualified Text.Megaparsec as MP
 import qualified Text.Megaparsec.Char as MP
@@ -82,40 +79,3 @@ row = do
 
 object :: Parser Value
 object = Obj <$> M.fromList <$> braces (row `MP.sepBy` comma)
-
-x :: String
-x = [r|{
-  "booleano": true,
-  "color": "#82b92c",
-  "nulo": null,
-  "fodases": {
-    "iai": "parsero",
-    "nao": "ligo",
-    "kk": 1232
-  }
-}
-|]
-
-y :: String
-y = [r|{"booleano": true, "color": "#82b92c", "nulo": null, "fodase" : {"iai":213123, "kk": null}}|]
-
-z :: String
-z = [r|
-{
-  "array": [
-    1,
-    2,
-    3
-  ],
-  "boolean": true,
-  "color": "#82b92c",
-  "null": null,
-  "number": 123,
-  "object": {
-    "a": "b",
-    "c": "d",
-    "e": "f"
-  },
-  "string": "Hello World"
-}
-|]

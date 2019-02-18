@@ -29,7 +29,6 @@ library
       base >=4.7 && <5
     , containers
     , megaparsec >= 7
-    , raw-strings-qq
   default-language: Haskell2010
 
 executable jason-exe
@@ -42,9 +41,6 @@ executable jason-exe
   build-depends:
       base >=4.7 && <5
     , jason
-    , containers
-    , megaparsec >= 7
-    , raw-strings-qq
   default-language: Haskell2010
 
 test-suite jason-test
@@ -58,4 +54,7 @@ test-suite jason-test
   build-depends:
       base >=4.7 && <5
     , jason
+    , hspec
+    , megaparsec >= 7
+    , raw-strings-qq
   default-language: Haskell2010
