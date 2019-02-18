@@ -6,7 +6,7 @@ bug-reports:    https://github.com/appositum/jason/issues
 author:         Eddie
 maintainer:     appositum@protonmail.com
 copyright:      Eddie
-license:        BSD3
+license:        Apache-2.0
 license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
@@ -20,7 +20,7 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Jason
   other-modules:
       Paths_jason
   hs-source-dirs:

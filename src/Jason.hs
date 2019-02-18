@@ -1,6 +1,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 
-module Lib where
+module Jason where
 
 import           Prelude hiding (null)
 import           Data.Void (Void)
