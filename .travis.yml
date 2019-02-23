@@ -1,0 +1,5 @@
+language: nix
+script: nix-build
+
+notifications:
+  email: false
