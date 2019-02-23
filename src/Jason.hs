@@ -29,23 +29,23 @@ data Value = Null
            | Obj Object
            deriving (Eq, Show)
 
-lexeme :: Parser a -> Parser a
-lexeme = L.lexeme MP.space
+tokenize :: Parser a -> Parser a
+tokenize p = MP.space *> p <* MP.space
 
 integer :: Parser Integer
-integer = lexeme L.decimal
+integer = tokenize (L.signed MP.space L.decimal)
 
-symbol :: String -> Parser String
-symbol = L.symbol MP.space
+symbolic :: Char -> Parser Char
+symbolic = tokenize . MP.char
 
-comma :: Parser String
-comma = symbol ","
+comma :: Parser Char
+comma = symbolic ','
 
 braces :: Parser a -> Parser a
-braces = MP.between (symbol "{") (symbol "}")
+braces = MP.between (symbolic '{') (symbolic '}')
 
 brackets :: Parser a -> Parser a
-brackets = MP.between (symbol "[") (symbol "]")
+brackets = MP.between (symbolic '[') (symbolic ']')
 
 identifier :: Parser String
 identifier = (:) <$> MP.letterChar <*> MP.many MP.alphaNumChar
@@ -59,7 +59,7 @@ bool = do
       "false" -> False
 
 number :: Parser Value
-number = Number <$> L.signed MP.space integer
+number = Number <$> integer
 
 null :: Parser Value
 null = MP.string "null" *> pure Null
@@ -76,8 +76,7 @@ array = Array <$> brackets (value `MP.sepBy` comma)
 row :: Parser (String, Value)
 row = do
   k <- stringLiteral
-  MP.space
-  symbol ":"
+  symbolic ':'
   v <- value
   pure (k, v)
 
@@ -85,7 +84,7 @@ object :: Parser Value
 object = Obj <$> M.fromList <$> braces (row `MP.sepBy` comma)
 
 value :: Parser Value
-value = number <|> null <|> bool <|> string <|> array <|> object
+value = tokenize $ number <|> null <|> bool <|> string <|> array <|> object
 
 parseJson :: String -> Either ParseError Value
 parseJson = MP.parse value mempty
