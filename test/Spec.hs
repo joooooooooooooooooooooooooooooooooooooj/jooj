@@ -18,8 +18,11 @@ main = hspec $ do
     it "can parse inline string" $ do
       parse y `shouldSatisfy` isJust
 
-    --it "can parse object inside object" $ do
-    --  parse z `shouldSatisfy` isJust
+    it "can parse object inside object" $ do
+      parse z `shouldSatisfy` isJust
+
+    it "can parse douglas" $ do
+      parse w `shouldSatisfy` isJust
 
 x :: String
 x = [r|{
@@ -29,7 +32,7 @@ x = [r|{
   "fodases": {
     "iai": "parsero",
     "nao": "ligo",
-    "kk": 1232
+    "kk": -1232
   }
 }
 |]
@@ -57,3 +60,11 @@ z = [r|
   "string": "Hello World"
 }
 |]
+
+w :: String
+w = [r|{
+  "0": {
+    "neurons": "300",
+    "weights": [1,2,3,4,5]
+  }
+}|]
