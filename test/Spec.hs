@@ -1,7 +1,7 @@
 {-# LANGUAGE QuasiQuotes #-}
 
 import Data.Maybe (isJust)
-import Jason (value, Value(..))
+import Jason
 import Test.Hspec
 import Text.RawString.QQ
 import Text.Megaparsec (parseMaybe)

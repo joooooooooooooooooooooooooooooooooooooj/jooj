@@ -3,6 +3,8 @@ module Jason
   , parseJson'
   , value
   , Object
+  , ParseError
+  , Parser
   , Value(..)
   ) where
 
