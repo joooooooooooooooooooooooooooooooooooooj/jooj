@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nix-shell --run "cabal --enable-nix v1-repl lib:jason"
+nix-shell --run "cabal --enable-nix v1-repl lib:jooj"
