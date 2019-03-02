@@ -69,7 +69,7 @@ w :: String
 w = [r|{
   "0": {
     "neurons": "300",
-    "weights": [1,2,3,4,5]
+    "weights": [1,2,3,4,5],
     "scisci": {
       "one" :2.5e-3,
       "twooo":   -1.3e-3
