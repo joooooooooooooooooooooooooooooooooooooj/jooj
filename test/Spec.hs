@@ -2,16 +2,26 @@
 
 import Data.Maybe (isJust)
 import JooJ
+import System.Directory (listDirectory)
 import Test.Hspec
 import Text.RawString.QQ
-import Text.Megaparsec (parseMaybe)
 
 parse :: String -> Maybe Value
-parse = parseMaybe value
+parse = either (const Nothing) Just . parseJson
+
+parseFile :: FilePath -> IO (Maybe Value)
+parseFile path = parse <$> readFile path
+
+parseFiles :: FilePath -> IO [Maybe Value]
+parseFiles path = listDirectory path >>= traverse (parseFile . (path++))
 
 main :: IO ()
 main = hspec $ do
   describe "Parse JSON" $ do
+    it "parse test files" $ do
+      res <- parseFiles "test/files/"
+      res `shouldSatisfy` all isJust
+
     it "can parse formatted" $ do
       parse x `shouldSatisfy` isJust
 
