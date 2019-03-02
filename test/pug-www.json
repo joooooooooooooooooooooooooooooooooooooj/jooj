@@ -1,0 +1,84 @@
+{
+  "name": "pug-www",
+  "version": "1.0.0",
+  "description": "Pug website",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "static": "node stop.js",
+    "tarball": "npm run static && tar -caf output.tar.bz2 output",
+    "lint": "xo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pugjs/pug-www.git"
+  },
+  "keywords": [
+    "pug"
+  ],
+  "author": "Timothy Gu <timothygu99@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pugjs/pug-www/issues"
+  },
+  "homepage": "https://github.com/pugjs/pug-www/#readme",
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015-node6": "^0.4.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "babelify": "^8.0.0",
+    "bootstrap": "4.0.0-alpha.5",
+    "browserify-middleware": "^8.0.0",
+    "codemirror": "^5.18.2",
+    "constantinople": "^3.1.0",
+    "envify": "^4.0.0",
+    "express": "^4.13.4",
+    "front-matter": "^2.1.0",
+    "fs-extra-promise": "^1.0.0",
+    "js-beautify": "^1.6.4",
+    "js-stringify": "^1.0.2",
+    "jstransformer": "^1.0.0",
+    "jstransformer-autoprefixer": "^2.0.0",
+    "jstransformer-scss": "^1.0.0",
+    "markdown-it": "^8.0.1",
+    "markdown-it-anchor": "^4.0.0",
+    "markdown-it-container": "^2.0.0",
+    "object-assign": "^4.1.0",
+    "prop-types": "^15.6.0",
+    "pug": "^2.0.0-beta6",
+    "pug-lexer": "^4.0.0",
+    "react": "^15.6.2",
+    "react-code-mirror": "^3.1.0",
+    "react-dom": "^15.6.2",
+    "resolve": "^1.1.7"
+  },
+  "devDependencies": {
+    "eslint-config-xo-react": "0.14.0",
+    "eslint-plugin-react": "^7.0.0",
+    "gethub": "^2.0.2",
+    "jstransformer-babel": "^2.1.0",
+    "jstransformer-cdata-js": "^1.0.0",
+    "jstransformer-coffee-script": "^1.1.0",
+    "jstransformer-markdown-it": "^2.0.0",
+    "s3": "^4.4.0",
+    "stop": "TimothyGu/stop#cebdbac7e97ed8ba276dab50a296cc37ced8f848",
+    "xo": "^0.18.0"
+  },
+  "browser": {
+    "./src/feature-detect/index.js": "./src/feature-detect/index.browser.js"
+  },
+  "xo": {
+    "esnext": true,
+    "space": 2,
+    "plugin": "react",
+    "extend": "xo-react",
+    "ignores": [
+      "output/**"
+    ]
+  }
+}
