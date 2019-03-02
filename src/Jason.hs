@@ -10,6 +10,7 @@ import           Prelude hiding (null)
 import           Data.Void (Void)
 import           Data.Map (Map)
 import qualified Data.Map as M
+import           Data.Scientific (Scientific)
 
 import           Text.Megaparsec (Parsec, (<|>))
 import qualified Text.Megaparsec as MP
@@ -22,7 +23,7 @@ type ParseError = MP.ParseErrorBundle String Void
 type Object = Map String Value
 
 data Value = Null
-           | Number Integer
+           | Number Scientific
            | String String
            | Boolean Bool
            | Array [Value]
@@ -32,8 +33,8 @@ data Value = Null
 tokenize :: Parser a -> Parser a
 tokenize p = MP.space *> p <* MP.space
 
-integer :: Parser Integer
-integer = tokenize (L.signed MP.space L.decimal)
+scientific :: Parser Scientific
+scientific = tokenize (L.signed MP.space L.scientific)
 
 symbolic :: Char -> Parser Char
 symbolic = tokenize . MP.char
@@ -59,7 +60,7 @@ bool = do
       "false" -> False
 
 number :: Parser Value
-number = Number <$> integer
+number = Number <$> scientific
 
 null :: Parser Value
 null = MP.string "null" *> pure Null
