@@ -21,9 +21,6 @@ main = hspec $ do
     it "can parse object inside object" $ do
       parse z `shouldSatisfy` isJust
 
-    it "can parse douglas" $ do
-      parse w `shouldSatisfy` isJust
-
     it "can parse scientific notation" $ do
       parse "-1.0e+3" `shouldSatisfy` isJust
 
@@ -61,18 +58,17 @@ z = [r|
     "c": "d",
     "e": "f"
   },
-  "string": "Hello World"
-}
-|]
+  "string": "Hello World",
 
-w :: String
-w = [r|{
-  "0": {
-    "neurons": "300",
-    "weights": [1,2,3,4,5],
-    "scisci": {
-      "one" :2.5e-3,
-      "twooo":   -1.3e-3
+  "oq":{
+    "0": {
+      "neurons": "300",
+      "weights": [1,2,3,4,5],
+      "scisci": {
+        "one" :2.5e-3,
+        "twooo":   -1.3e-3
+      }
     }
   }
-}|]
+  }
+|]
