@@ -1,6 +1,6 @@
 module Main where
 
-import Jason
+import JooJ
 
 main :: IO ()
 main = pure ()

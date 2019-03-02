@@ -1,4 +1,4 @@
-module Jason
+module JooJ
   ( parseJson
   , parseJson'
   , value
