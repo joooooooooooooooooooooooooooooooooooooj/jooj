@@ -90,7 +90,7 @@ value :: Parser Value
 value = tokenize $ number <|> null <|> bool <|> string <|> array <|> object
 
 parseJson :: String -> Either ParseError Value
-parseJson = MP.parse value mempty
+parseJson = MP.parse (value <* MP.eof) mempty
 
 parseJson' :: String -> IO ()
-parseJson' = MP.parseTest value
+parseJson' = MP.parseTest (value <* MP.eof)
