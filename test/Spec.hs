@@ -10,6 +10,16 @@ import Test.QuickCheck
 import Test.QuickCheck.Instances.Scientific
 import Text.RawString.QQ
 
+instance Arbitrary Value where
+  arbitrary = oneof
+    [ pure Null
+    , Number <$> arbitrary
+    , String <$> arbitrary
+    , Boolean <$> arbitrary
+    , Array <$> arbitrary
+    , Obj <$> arbitrary
+    ]
+
 parse :: String -> Maybe Value
 parse = either (const Nothing) Just . parseJson
 
