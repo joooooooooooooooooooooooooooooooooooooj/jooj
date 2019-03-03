@@ -1,0 +1,21 @@
+{
+  "name": "Jungle Gym",
+  "age": 25,
+  "favorite_color": "#ffa500",
+  "gender": "male",
+  "location": {
+    "city": "Seattle",
+    "state": "WA",
+    "citystate": "Seattle, WA"
+  },
+  "pets": [
+    {
+      "type": "dog",
+      "name": "Foo"
+    },
+    {
+      "type": "cat",
+      "name": "Bar"
+    }
+  ]
+}
