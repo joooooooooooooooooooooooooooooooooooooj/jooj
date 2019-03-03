@@ -1,9 +1,13 @@
-{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE QuasiQuotes      #-}
+{-# LANGUAGE TypeApplications #-}
 
 import Data.Maybe (isJust)
+import Data.Scientific
 import JooJ
 import System.Directory (listDirectory)
 import Test.Hspec
+import Test.QuickCheck
+import Test.QuickCheck.Instances.Scientific
 import Text.RawString.QQ
 
 parse :: String -> Maybe Value
@@ -32,7 +36,8 @@ main = hspec $ do
       parse z `shouldSatisfy` isJust
 
     it "can parse scientific notation" $ do
-      parse "-1.0e+3" `shouldSatisfy` isJust
+      lst <- sample' (arbitrary @Scientific)
+      parse . show <$> lst `shouldSatisfy` all isJust
 
 x :: String
 x = [r|{

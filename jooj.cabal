@@ -31,6 +31,8 @@ library
     , directory
     , megaparsec >= 7
     , scientific
+    , QuickCheck
+    , quickcheck-instances
   default-language: Haskell2010
 
 test-suite jooj-test
@@ -47,5 +49,8 @@ test-suite jooj-test
     , directory
     , hspec
     , megaparsec >= 7
+    , QuickCheck
+    , quickcheck-instances
     , raw-strings-qq
+    , scientific
   default-language: Haskell2010
