@@ -1,6 +1,7 @@
 module JooJ
   ( parseJson
   , parseJson'
+  , unparseJson
   , value
   , Object
   , ParseError
@@ -9,10 +10,11 @@ module JooJ
   ) where
 
 import           Prelude hiding (null)
-import           Data.Void (Void)
+import           Data.List (intercalate)
 import           Data.Map (Map)
 import qualified Data.Map as M
 import           Data.Scientific (Scientific)
+import           Data.Void (Void)
 
 import           Text.Megaparsec (Parsec, (<|>))
 import qualified Text.Megaparsec as MP
@@ -94,3 +96,21 @@ parseJson = MP.parse (value <* MP.eof) mempty
 
 parseJson' :: String -> IO ()
 parseJson' = MP.parseTest (value <* MP.eof)
+
+unparseJson :: Value -> String
+unparseJson val =
+  case val of
+    Null -> "null"
+    Number n -> show n
+    Boolean True -> "true"
+    Boolean False -> "false"
+    String str -> show str
+    Array arr -> show $ map unparseJson arr
+    Obj obj -> braces $ intercalate ", " $
+      M.foldrWithKey f [] obj where
+
+        f :: String -> Value -> [String] -> [String]
+        f k v acc = (show k ++ ": " ++ unparseJson v) : acc
+
+        braces :: String -> String
+        braces str = "{" ++ str ++ "}"
