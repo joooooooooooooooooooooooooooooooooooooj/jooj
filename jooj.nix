@@ -5,7 +5,7 @@ mkDerivation {
   src = ./.;
   isLibrary = true;
   isExecutable = false;
-  libraryHaskellDepends = [ base containers directory megaparsec QuickCheck quickcheck-instances scientific ];
+  libraryHaskellDepends = [ base containers megaparsec scientific ];
   testHaskellDepends = [ base directory hspec megaparsec QuickCheck quickcheck-instances raw-strings-qq scientific ];
   doHaddock = false;
   homepage = "https://github.com/appositum/jooj#readme";
