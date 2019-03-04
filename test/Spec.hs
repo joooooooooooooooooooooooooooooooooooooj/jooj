@@ -1,7 +1,7 @@
 {-# LANGUAGE QuasiQuotes      #-}
 {-# LANGUAGE TypeApplications #-}
 
-import Data.Maybe (isJust)
+import Data.Maybe (fromJust, isJust)
 import Data.Scientific
 import JooJ
 import System.Directory (listDirectory)
@@ -44,7 +44,6 @@ main = hspec $ do
       xs <- sample' (arbitrary @String)
       map (parse . show) xs `shouldSatisfy` all isJust
 
-    -- Guarantees the AST is the same before and after the unparsing
     it "can unparse and parse back" $ do
-      xs <- sample' (arbitrary @Value)
-      map (parse . unparseJson) xs `shouldSatisfy` all isJust
+      res <- parseFiles "test/files/"
+      map (parse . unparseJson . fromJust) res `shouldSatisfy` all isJust
