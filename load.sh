@@ -1,3 +1,3 @@
 #!/bin/sh
 
-nix-shell --run "cabal --enable-nix v1-repl lib:jooj"
+nix-shell -p 'haskellPackages.ghcWithPackages (pkgs: [ (pkgs.callPackage ./jooj.nix {}) ])' --run ghci
