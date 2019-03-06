@@ -1,5 +1,5 @@
-{-# LANGUAGE QuasiQuotes      #-}
-{-# LANGUAGE TypeApplications #-}
+{-# language QuasiQuotes      #-}
+{-# language TypeApplications #-}
 
 import Data.Maybe (fromJust, isJust)
 import Data.Scientific
