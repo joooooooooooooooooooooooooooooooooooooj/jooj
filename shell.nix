@@ -1,13 +1,12 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "default", doBenchmark ? false }:
+with import <nixpkgs> {};
 
 let
-  inherit (nixpkgs) pkgs;
-
-  haskellPackages = if compiler == "default"
-                       then pkgs.haskellPackages
-                       else pkgs.haskell.packages.${compiler};
-
-  variant = if doBenchmark then pkgs.haskell.lib.doBenchmark else pkgs.lib.id;
-  drv = variant (haskellPackages.callPackage ./jooj.nix {});
+  env = haskellPackages.ghcWithPackages (p: [ (p.callPackage ./jooj.nix {}) ]);
 in
-  if pkgs.lib.inNixShell then drv.env else drv
+stdenv.mkDerivation rec {
+  name = "env";
+  buildInputs = [ env ];
+  shellHook = ''
+  ghci && exit
+  '';
+}
