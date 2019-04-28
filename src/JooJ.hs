@@ -10,6 +10,9 @@ module JooJ
   ) where
 
 import           Prelude hiding (null)
+import           Control.Applicative (empty)
+import           Control.Monad (void)
+
 import           Data.List (intercalate)
 import           Data.Map (Map)
 import qualified Data.Map as M
@@ -34,26 +37,30 @@ data Value = Null
            | Obj Object
            deriving (Eq, Show)
 
-tokenize :: Parser a -> Parser a
-tokenize p = MP.space *> p <* MP.space
+sc :: Parser ()
+sc = L.space MP.space1 (void $ MP.oneOf [' ', '\t']) empty
 
-scientific :: Parser Scientific
-scientific = tokenize (L.signed MP.space L.scientific)
+lexeme :: Parser a -> Parser a
+lexeme = L.lexeme sc
 
-symbolic :: Char -> Parser Char
-symbolic = tokenize . MP.char
+symbol :: String -> Parser String
+symbol = L.symbol sc
 
-comma :: Parser Char
-comma = symbolic ','
+comma :: Parser String
+comma = symbol ","
+
+colon :: Parser String
+colon = symbol ":"
 
 braces :: Parser a -> Parser a
-braces = MP.between (symbolic '{') (symbolic '}')
+braces = MP.between (symbol "{") (symbol "}")
 
 brackets :: Parser a -> Parser a
-brackets = MP.between (symbolic '[') (symbolic ']')
+brackets = MP.between (symbol "[") (symbol "]")
 
 identifier :: Parser String
-identifier = (:) <$> MP.letterChar <*> MP.many MP.alphaNumChar
+identifier = lexeme $
+  (:) <$> MP.letterChar <*> MP.many MP.alphaNumChar
 
 bool :: Parser Value
 bool = do
@@ -64,13 +71,14 @@ bool = do
       "false" -> False
 
 number :: Parser Value
-number = Number <$> scientific
+number = Number <$> L.signed sc (lexeme L.scientific)
 
 null :: Parser Value
 null = MP.string "null" *> pure Null
 
 stringLiteral :: Parser String
-stringLiteral = MP.char '"' *> MP.manyTill L.charLiteral (MP.char '"')
+stringLiteral = lexeme $
+  MP.char '"' *> MP.manyTill L.charLiteral (MP.char '"')
 
 string :: Parser Value
 string = String <$> stringLiteral
@@ -79,23 +87,26 @@ array :: Parser Value
 array = Array <$> brackets (value `MP.sepBy` comma)
 
 row :: Parser (String, Value)
-row = do
-  k <- stringLiteral
-  symbolic ':'
-  v <- value
-  pure (k, v)
+row = (,) <$> (stringLiteral <* colon) <*> value
 
 object :: Parser Value
 object = Obj <$> M.fromList <$> braces (row `MP.sepBy` comma)
 
 value :: Parser Value
-value = tokenize $ number <|> null <|> bool <|> string <|> array <|> object
+value = lexeme $ MP.choice
+  [ number
+  , null
+  , bool
+  , string
+  , array
+  , object
+  ]
 
 parseJson :: String -> Either ParseError Value
-parseJson = MP.parse (value <* MP.eof) mempty
+parseJson = MP.parse (MP.space *> value <* MP.eof) mempty
 
 parseJson' :: String -> IO ()
-parseJson' = MP.parseTest (value <* MP.eof)
+parseJson' = MP.parseTest (MP.space *> value <* MP.eof)
 
 unparseJson :: Value -> String
 unparseJson val =
