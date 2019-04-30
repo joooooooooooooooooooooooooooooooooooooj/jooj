@@ -10,7 +10,7 @@ import Test.QuickCheck
 import Test.QuickCheck.Instances.Scientific
 import Text.RawString.QQ
 
-instance Arbitrary Value where
+instance Arbitrary JsonValue where
   arbitrary = oneof
     [ pure Null
     , Number <$> arbitrary
@@ -20,13 +20,13 @@ instance Arbitrary Value where
     , Obj <$> arbitrary
     ]
 
-parse :: String -> Maybe Value
+parse :: String -> Maybe JsonValue
 parse = either (const Nothing) Just . parseJson
 
-parseFile :: FilePath -> IO (Maybe Value)
+parseFile :: FilePath -> IO (Maybe JsonValue)
 parseFile path = parse <$> readFile path
 
-parseFiles :: FilePath -> IO [Maybe Value]
+parseFiles :: FilePath -> IO [Maybe JsonValue]
 parseFiles path = listDirectory path >>= traverse (parseFile . (path++))
 
 main :: IO ()
