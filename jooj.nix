@@ -1,4 +1,7 @@
-{ mkDerivation, base, containers, directory, hspec, megaparsec, QuickCheck, quickcheck-instances, raw-strings-qq, scientific, stdenv }:
+{ mkDerivation, base, containers, directory, hspec, megaparsec
+, QuickCheck, quickcheck-instances, raw-strings-qq, scientific
+, stdenv
+}:
 mkDerivation {
   pname = "jooj";
   version = "0.1.0.0";
