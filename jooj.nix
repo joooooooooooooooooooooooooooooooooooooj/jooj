@@ -1,4 +1,4 @@
-{ mkDerivation, base, containers, directory, hspec, megaparsec
+{ lib, mkDerivation, base, containers, directory, hspec, megaparsec
 , QuickCheck, quickcheck-instances, raw-strings-qq, scientific
 , stdenv
 }:
@@ -12,5 +12,5 @@ mkDerivation {
   testHaskellDepends = [ base directory hspec megaparsec QuickCheck quickcheck-instances raw-strings-qq scientific ];
   doHaddock = false;
   homepage = "https://github.com/appositum/jooj#readme";
-  license = stdenv.lib.licenses.asl20;
+  license = lib.licenses.asl20;
 }
